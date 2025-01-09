@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 TOKEN_CACHE = "token_cache"
 
 # Azure Blob Storage URL for images
-imageSourceUrl = f"https://{app.config['BLOB_ACCOUNT']}.blob.core.windows.net/{app.config['BLOB_CONTAINER']}/"
+imageSourceUrl = f"https://{app.config['BLOB_ACCOUNT']}.blob.core.windows.net/{app.config['BLOB_CONTAINER']}"
 
 @app.route('/')
 @app.route('/home')
@@ -36,9 +36,12 @@ def home():
     logger.info("Accessing home page")
     posts = Post.query.all()
     return render_template(
-        'index.html',
-        title='Home Page',
-        posts=posts
+        'post.html',
+        title='Edit Post',
+        form=form,
+        post=post,
+        imageSource=imageSourceUrl,
+        sas_token=app.config['BLOB_SAS_TOKEN']
     )
 
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
