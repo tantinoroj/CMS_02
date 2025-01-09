@@ -1,31 +1,61 @@
 # Write-up Template
 
-### Analyze, choose, and justify the appropriate resource option for deploying the app.
+For the Article CMS application, I analyzed both VM and App Service solutions considering the following aspects:
+Resource	Cost	Scalability	Availability	Workflow
+Virtual Machine	- Higher initial cost
+- Pay for compute time even when idle
+- Full control over instance type and resources	- Manual scaling configuration required
+- Can scale vertically with instance size changes
+- Requires additional setup for horizontal scaling	- Requires manual configuration for high availability
+- Need to manage OS updates and maintenance
+- More control over maintenance windows	- More complex initial setup
+- Full control over deployment process
+- Requires more DevOps knowledge
+- Manual configuration of dependencies
+App Service	- Lower initial cost
+- Pay only for actual usage
+- Free tier available for development
+- Predictable pricing based on service plan	- Built-in auto-scaling capabilities
+- Easy vertical and horizontal scaling
+- No infrastructure management needed	- Built-in load balancing
+- High availability included
+- Automatic OS and platform updates	- Simple deployment process
+- Built-in CI/CD with GitHub Actions
+- Easy configuration through portal
+- Managed SSL certificates
 
-_For **both** a VM or App Service solution for the CMS app:_
-
-- _Analyze costs, scalability, availability, and workflow_
-- _Choose the appropriate solution (VM or App Service) for deploying the app_
-- _Justify your choice_
-
-| **_Resource_**        | **_Cost_**                                                                                                                                                                                      | **_Scalability_**                                                                                                                                                                                                                                                                                                 | **_Workflow_**                                                                |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| **Virtual Machine** | They are more expensive                                                                                                                                                                   | Multiple VMs can be grouped to provide high availability, scalability, and redundancy.                                                                                                                                                                                                                      | They can be more time consuming for the developer                       |
-| **App Service**     | You can set the amount of hardware allocated to host your application, and cost varies based on the plan you choose. There are three different tiers - Dev/Test, Production, and Isolated | Vertical or Horizontal scaling. Vertical scaling increases or decreases resources allocated to our App Service, such as the amount of vCPUs or RAM, by changing the App Service pricing tier. Horizontal scaling increases or decreases the number of Virtual Machine instances our App Service is running. | Continuous deployment model using GitHub, Azure DevOps, or any Git repo |
 
 #### Solution selected
-App Service
+Azure App Service:
+I chose Azure App Service for deploying the Article CMS application for the following reasons:
+Cost Efficiency:
+  The application has moderate resource requirements
+  App Service's consumption-based pricing is more cost-effective for our usage
+  No need to pay for unused compute resources
+Development Workflow:
+  Direct integration with GitHub for continuous deployment
+  Built-in support for Python applications
+  Easy configuration of environment variables
+  Simple SSL certificate management
+Maintenance:
+  Automated platform and OS updates
+  Built-in monitoring and logging
+  No need for infrastructure management
+  Automatic backup capabilities
+Scalability:
+  Easy scaling through the Azure portal
+  Automatic scaling based on demand
+  No need to manage VM instances manually
 
-#### Justification
+#####
+App changes that would change your decision
+Scale and Performance:
+  Extremely high concurrent user load requiring fine-tuned server configuration
+  Need for specific performance optimizations at the OS level
 
-As the application is lightweight and written in Python, it'll be deployed with App Service because of their language support, cost saving and deployment simplicity. This will allow to deploy the application without concerning about the underlying OS or the software installed to run it. It will also allow the application to scale up or down and still be managed without any further configuration.
-### Assess app changes that would change your decision.
+Cost Considerations:
+  If the application scales to a point where VM costs become more economical
+  Need for reserved instances or specific cost optimization strategies
+  Requirements for specific regional deployments where App Service pricing is less favorable
 
-_Detail how the app and any other needs would have to change for you to change your decision in the last section._
 
-#### Answer
-The application would need to be migrated in the following scenarios:
-
-* The application requires more than 14 GB or 4 CPU cores per instance.
-* Installation of custom software on the server.
-* The App is migrated to a language unsupported by App Service.
