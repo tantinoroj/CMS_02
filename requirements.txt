@@ -36,5 +36,5 @@ flask-session==0.8.0
 isodate==0.7.2
 msrest==0.7.1
 flask-login==0.6.3
-config==0.5.1
-colorama==0.4.6
+azure-identity==1.15.0
+bootstrap-flask==2.3.3
