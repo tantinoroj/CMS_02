@@ -25,7 +25,7 @@ class Config(object):
     
     SQLALCHEMY_DATABASE_URI = (
         f"mssql+pyodbc://{SQL_USER_NAME}:{SQL_PASSWORD}@{SQL_SERVER}:1433/{SQL_DATABASE}"
-        "?driver=ODBC+Driver+17+for+SQL+Server"
+        "?driver=ODBC+Driver+18+for+SQL+Server"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
