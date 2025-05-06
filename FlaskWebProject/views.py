@@ -41,8 +41,8 @@ def home():
         posts=posts
     )
 
-@app.route('/post/<int:id>', methods=['GET', 'POST'])
-# @app.route('/new_post', methods=['GET', 'POST'])
+# @app.route('/post/<int:id>', methods=['GET', 'POST'])
+@app.route('/new_post', methods=['GET', 'POST'])
 @login_required
 
 def post(id):
@@ -84,8 +84,8 @@ def post(id):
         imageSource=imageSourceUrl,
         # sas_token=app.config['BLOB_SAS_TOKEN']
     )
-  @app.route('/new_post', methods=['GET', 'POST'])
-  @login_required
+@app.route('/new_post', methods=['GET', 'POST'])
+@login_required
 def new_post():
     logger.info(f"User {current_user.username} accessing new post page")
     form = PostForm(request.form)
