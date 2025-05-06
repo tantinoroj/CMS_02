@@ -46,8 +46,10 @@ def home():
 def post(id):
     logger.info(f"User {current_user.username} accessing post {id}")
     post = Post.query.get_or_404(id)
-    # form = PostForm(obj=post)
-    form = PostForm(formdata=request.form,obj=post)
+    form = PostForm(obj=post)
+    # if form.validate_on_submit():
+    #     post.save_changes(form, request.files['image_path'], current_user.id)
+    #     return redirect(url_for('home'))
     if form.validate_on_submit():
         logger.info(f"User {current_user.username} updating post {id}")
         post.title = form.title.data
@@ -80,7 +82,7 @@ def post(id):
         form=form,
         post=post,
         imageSource=imageSourceUrl,
-        sas_token=app.config['BLOB_SAS_TOKEN']
+        # sas_token=app.config['BLOB_SAS_TOKEN']
     )
 
 @app.route('/new_post', methods=['GET', 'POST'])
