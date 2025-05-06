@@ -89,16 +89,16 @@ def post(id):
 @login_required
 def new_post():
     logger.info(f"User {current_user.username} accessing new post page")
-    form = PostForm()
+    form = PostForm(request.form)
     if form.validate_on_submit():
         try:
             logger.info(f"User {current_user.username} creating new post")
             post = Post(
-                title=form.title.data,
-                body=form.body.data,
-                author=form.author.data,
-                user_id=current_user.id,
-                timestamp=datetime.utcnow()
+                # title=form.title.data,
+                # body=form.body.data,
+                # author=form.author.data,
+                # user_id=current_user.id,
+                # timestamp=datetime.utcnow()
             )
             
             if form.image_path.data:
@@ -116,7 +116,8 @@ def new_post():
                 except Exception as e:
                     logger.error(f"Error uploading image by user {current_user.username}: {str(e)}")
                     flash(f"Error uploading image: {str(e)}")
-            post.save_changes(form, request.files['image_path'], current_user.id, new=True)
+            # post.save_changes(form, request.files['image_path'], current_user.id, new=True)
+            post.save_changes(form, post.image_path, current_user.id, new=True)
             # db.session.add(post)
             # db.session.commit()
             logger.info(f"User {current_user.username} successfully created new post")
