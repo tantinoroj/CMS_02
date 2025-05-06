@@ -68,7 +68,8 @@ def new_post():
                     logger.error(f"Error uploading image by user {current_user.username}: {str(e)}")
                     flash(f"Error uploading image: {str(e)}")
                     
-            post.save_changes(form, request.files['image_path'], current_user.id, new=True)
+            db.session.add(post)
+            db.session.commit()
 
             logger.info(f"User {current_user.username} successfully created new post")
             flash('Your post has been created!')
@@ -95,10 +96,24 @@ def post(id):
         logger.info(f"User {current_user.username} updating post {id}")
         post.title = form.title.data
         post.body = form.body.data
-        post.save_changes(form, request.files['image_path'], current_user.id)
-        # LOG Informational
-        # LOG.info('INFO: Post ' + str(id) + ' edited by user: ' + str(current_user.id))
+       
+        if form.image_path.data:
+            try:
+                filename = secure_filename(form.image_path.data.filename)
+                logger.info(f"User {current_user.username} uploading image: {filename}")
+                blob_client = BlobClient.from_connection_string(
+                    app.config['BLOB_STORAGE_KEY'],
+                    container_name=app.config['BLOB_CONTAINER'],
+                    blob_name=filename
+                )
+                blob_client.upload_blob(form.image_path.data.read(), overwrite=True)
+                post.image_path = filename
+                logger.info(f"User {current_user.username} successfully uploaded image: {filename}")
+            except Exception as e:
+                logger.error(f"Error uploading image by user {current_user.username}: {str(e)}")
+                flash(f"Error uploading image: {str(e)}")
         
+        db.session.commit()
         logger.info(f"User {current_user.username} successfully updated post {id}")
         flash('Your post has been updated!')
         return redirect(url_for('home'))
