@@ -32,8 +32,8 @@ class Config(object):
     # Microsoft Authentication
     CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
     CLIENT_ID = os.environ.get('CLIENT_ID')
-    AUTHORITY = os.environ.get('AUTHORITY')
-    REDIRECT_PATH = os.environ.get('REDIRECT_PATH')
+    AUTHORITY = "https://login.microsoftonline.com/ff873fe8-6631-416d-9262-bdbd56117dae"
+    REDIRECT_PATH = "/getAToken"
     SCOPE = ["User.Read"]
     
     # Session Configuration
