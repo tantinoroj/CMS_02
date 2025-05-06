@@ -23,10 +23,10 @@ class Config(object):
     # SQLAlchemy Database URI
     # SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://' + SQL_USER_NAME + '@' + SQL_SERVER + ':' + SQL_PASSWORD + '@' + SQL_SERVER + ':1433/' + SQL_DATABASE  + '?driver=ODBC+Driver+17+for+SQL+Server'
     
-    SQLALCHEMY_DATABASE_URI = 
-        f"mssql+pyodbc://{SQL_USER_NAME}@{SQL_PASSWORD}@{SQL_SERVER}:1433/{SQL_DATABASE}"
+    SQLALCHEMY_DATABASE_URI = (
+        f"mssql+pyodbc://{SQL_USER_NAME}:{SQL_PASSWORD}@{SQL_SERVER}:1433/{SQL_DATABASE}"
         "?driver=ODBC+Driver+17+for+SQL+Server"
-    
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Microsoft Authentication
