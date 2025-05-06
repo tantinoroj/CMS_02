@@ -51,9 +51,9 @@ def post(id):
     form = PostForm(obj=post)
 
     if form.validate_on_submit():
-        logger.info(f"User {current_user.username} updating post {id}")
-        post.title = form.title.data
-        post.body = form.body.data
+        # logger.info(f"User {current_user.username} updating post {id}")
+        # post.title = form.title.data
+        # post.body = form.body.data
         
         if form.image_path.data:
             try:
