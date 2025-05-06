@@ -11,8 +11,8 @@ class Config(object):
     BLOB_ACCOUNT = os.environ.get('BLOB_ACCOUNT')
     BLOB_STORAGE_KEY = os.environ.get('BLOB_STORAGE_KEY')
     BLOB_CONTAINER = os.environ.get('BLOB_CONTAINER')
-    BLOB_SAS_TOKEN = os.environ.get('BLOB_SAS_TOKEN')
-    BLOB_SAS_URL = os.environ.get('BLOB_SAS_URL')
+    # BLOB_SAS_TOKEN = os.environ.get('BLOB_SAS_TOKEN')
+    # BLOB_SAS_URL = os.environ.get('BLOB_SAS_URL')
 
     # Azure SQL Database Configuration
     SQL_SERVER = os.environ.get('SQL_SERVER')
