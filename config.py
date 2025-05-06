@@ -35,4 +35,4 @@ class Config(object):
     SCOPE = ["User.Read"]
     
     # Session Configuration
-    SESSION_TYPE = os.environ.get('SESSION_TYPE')
+    SESSION_TYPE = "filesystem"
