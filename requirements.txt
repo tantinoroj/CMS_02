@@ -1,11 +1,12 @@
 certifi==2024.12.14
 setuptools==65.5.0
 cryptography==44.0.0
-pip==24.3.1
+# pip==24.3.1
+pip==10.0.1
 azure-storage-blob==12.6.0
 click==8.1.8
 # pyodbc==5.2.0
-pyodbc
+pyodbc>=4.0.28
 typing-extensions==4.12.2
 idna==3.10
 charset-normalizer==3.4.1
