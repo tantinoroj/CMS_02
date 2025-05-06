@@ -44,99 +44,41 @@ def home():
 # @app.route('/post/<int:id>', methods=['GET', 'POST'])
 @app.route('/new_post', methods=['GET', 'POST'])
 @login_required
-
-def post(id):
-    logger.info(f"User {current_user.username} accessing post {id}")
-    post = Post.query.get_or_404(id)
-    form = PostForm(obj=post)
-
-    if form.validate_on_submit():
-        # logger.info(f"User {current_user.username} updating post {id}")
-        # post.title = form.title.data
-        # post.body = form.body.data
-        
-        if form.image_path.data:
-            try:
-                filename = secure_filename(form.image_path.data.filename)
-                logger.info(f"User {current_user.username} uploading image: {filename}")
-                blob_client = BlobClient.from_connection_string(
-                    app.config['BLOB_STORAGE_KEY'],
-                    container_name=app.config['BLOB_CONTAINER'],
-                    blob_name=filename
-                )
-                blob_client.upload_blob(form.image_path.data.read(), overwrite=True)
-                post.image_path = filename
-                logger.info(f"User {current_user.username} successfully uploaded image: {filename}")
-            except Exception as e:
-                logger.error(f"Error uploading image by user {current_user.username}: {str(e)}")
-                flash(f"Error uploading image: {str(e)}")
-        # post.save_changes(form, request.files['image_path'], current_user.id)
-        db.session.commit()
-        logger.info(f"User {current_user.username} successfully updated post {id}")
-        flash('Your post has been updated!')
-        return redirect(url_for('home'))
-
-    return render_template(
-        'post.html',
-        title='Edit Post',
-        form=form,
-        post=post,
-        imageSource=imageSourceUrl,
-        # sas_token=app.config['BLOB_SAS_TOKEN']
-    )
-@app.route('/new_post', methods=['GET', 'POST'])
-@login_required
 def new_post():
-    logger.info(f"User {current_user.username} accessing new post page")
     form = PostForm(request.form)
     if form.validate_on_submit():
-        try:
-            logger.info(f"User {current_user.username} creating new post")
-            post = Post(
-                title=form.title.data,
-                body=form.body.data,
-                author=form.author.data,
-                user_id=current_user.id,
-                timestamp=datetime.utcnow()
-            )
-            
-            if form.image_path.data:
-                try:
-                    filename = secure_filename(form.image_path.data.filename)
-                    logger.info(f"User {current_user.username} uploading image: {filename}")
-                    blob_client = BlobClient.from_connection_string(
-                        app.config['BLOB_STORAGE_KEY'],
-                        container_name=app.config['BLOB_CONTAINER'],
-                        blob_name=filename
-                    )
-                    blob_client.upload_blob(form.image_path.data.read(), overwrite=True)
-                    post.image_path = filename
-                    logger.info(f"User {current_user.username} successfully uploaded image: {filename}")
-                except Exception as e:
-                    logger.error(f"Error uploading image by user {current_user.username}: {str(e)}")
-                    flash(f"Error uploading image: {str(e)}")
-            # post.save_changes(form, request.files['image_path'], current_user.id, new=True)
-            # post.save_changes(form, post.image_path, current_user.id, new=True)
-            db.session.add(post)
-            db.session.commit()
-            logger.info(f"User {current_user.username} successfully created new post")
-            flash('Your post has been created!')
-            return redirect(url_for('home'))
-            
-        except Exception as e:
-            logger.error(f"Error creating post by user {current_user.username}: {str(e)}")
-            db.session.rollback()
-            flash(f"Error creating post: {str(e)}")
-    
+        post = Post()
+        post.save_changes(form, request.files['image_path'], current_user.id, new=True)
+        # LOG Informational
+        # LOG.info('INFO: New post added by user: ' + str(current_user.id))
+        return redirect(url_for('home'))
     return render_template(
         'post.html',
         title='Create Post',
-        form=form,
-        imageSource=imageSourceUrl
+        imageSource=imageSourceUrl,
+        form=form
+    )
+@app.route('/post/<int:id>', methods=['GET', 'POST'])
+@login_required
+
+def post(id):
+    post = Post.query.get(int(id))
+    form = PostForm(formdata=request.form, obj=post)
+    if form.validate_on_submit():
+        post.save_changes(form, request.files['image_path'], current_user.id)
+        # LOG Informational
+        # LOG.info('INFO: Post ' + str(id) + ' edited by user: ' + str(current_user.id))
+        return redirect(url_for('home'))
+    return render_template(
+        'post.html',
+        title='Edit Post',
+        imageSource=imageSourceUrl,
+        form=form
     )
 
 @app.route('/login', methods=['GET', 'POST'])
-# @app.route('/post/<int:id>', methods=['GET', 'POST'])
+@login_required
+
 def login():
     if current_user.is_authenticated:
         logger.info(f"Already authenticated user {current_user.username} accessing login page")
