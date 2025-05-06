@@ -70,8 +70,8 @@ def post(id):
             except Exception as e:
                 logger.error(f"Error uploading image by user {current_user.username}: {str(e)}")
                 flash(f"Error uploading image: {str(e)}")
-        post.save_changes(form, request.files['image_path'], current_user.id)
-        # db.session.commit()
+        # post.save_changes(form, request.files['image_path'], current_user.id)
+        db.session.commit()
         logger.info(f"User {current_user.username} successfully updated post {id}")
         flash('Your post has been updated!')
         return redirect(url_for('home'))
