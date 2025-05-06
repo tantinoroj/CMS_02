@@ -135,9 +135,8 @@ def post(id):
         imageSource=imageSourceUrl,
         # sas_token=app.config['BLOB_SAS_TOKEN']
     )
-
-@app.route('/new_post', methods=['GET', 'POST'])
-@login_required
+@app.route('/login', methods=['GET', 'POST'])
+# @app.route('/new_post', methods=['GET', 'POST'])
 
 def login():
     if current_user.is_authenticated:
