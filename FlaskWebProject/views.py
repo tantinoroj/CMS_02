@@ -51,11 +51,11 @@ def new_post():
         try:
             logger.info(f"User {current_user.username} creating new post")
             post = Post(
-                # title=form.title.data,
-                # body=form.body.data,
-                # author=form.author.data,
-                # user_id=current_user.id,
-                # timestamp=datetime.utcnow()
+                title=form.title.data,
+                body=form.body.data,
+                author=form.author.data,
+                user_id=current_user.id,
+                timestamp=datetime.utcnow()
             )
             
             if form.image_path.data:
@@ -74,9 +74,9 @@ def new_post():
                     logger.error(f"Error uploading image by user {current_user.username}: {str(e)}")
                     flash(f"Error uploading image: {str(e)}")
             # post.save_changes(form, request.files['image_path'], current_user.id, new=True)
-            post.save_changes(form, post.image_path, current_user.id, new=True)
-            # db.session.add(post)
-            # db.session.commit()
+            # post.save_changes(form, post.image_path, current_user.id, new=True)
+            db.session.add(post)
+            db.session.commit()
             logger.info(f"User {current_user.username} successfully created new post")
             flash('Your post has been created!')
             return redirect(url_for('home'))
@@ -95,7 +95,7 @@ def new_post():
 
 # @app.route('/login', methods=['GET', 'POST'])
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
-@login_required
+
 def post(id):
     logger.info(f"User {current_user.username} accessing post {id}")
     post = Post.query.get_or_404(id)
