@@ -1,3 +1,7 @@
+alembic==1.4.0
+azure-common==1.1.24
+azure-nspkg==3.0.2
+azure-storage==0.36.0
 azure-core==1.32.0
 azure-identity==1.15.0
 azure-storage-blob==12.6.0
@@ -19,6 +23,7 @@ idna==3.10
 itsdangerous==2.2.0
 isodate==0.7.2
 jinja2==3.1.5
+Mako==1.1.1
 markupsafe==3.0.2
 msal==1.31.1
 msgspec==0.19.0
@@ -28,6 +33,9 @@ oauthlib==3.2.2
 pip==10.0.1
 # pyodbc==5.2.0
 pyodbc>=4.0.28
+pyopenssl==19.1.0
+python-dateutil==2.8.1
+python-editor==1.0.4
 python-dotenv==1.0.1
 pycparser==2.22
 pyjwt==2.10.1
