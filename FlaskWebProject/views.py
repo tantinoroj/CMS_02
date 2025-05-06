@@ -46,7 +46,8 @@ def home():
 def post(id):
     logger.info(f"User {current_user.username} accessing post {id}")
     post = Post.query.get_or_404(id)
-    form = PostForm(obj=post)
+    # form = PostForm(obj=post)
+    form = PostForm(formdata=request.form,obj=post)
     if form.validate_on_submit():
         logger.info(f"User {current_user.username} updating post {id}")
         post.title = form.title.data
