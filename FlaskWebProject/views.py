@@ -53,8 +53,7 @@ def new_post():
             logger.info(f"User {current_user.username} creating new post")
             post = Post()
             post.save_changes(form, request.files['image_path'], current_user.id, new=True)
-            # LOG Informational
-            # LOG.info('INFO: New post added by user: ' + str(current_user.id))
+
             logger.info(f"User {current_user.username} successfully created new post")
             flash('Your post has been created!')
             return redirect(url_for('home'))
@@ -67,7 +66,7 @@ def new_post():
         title='Create Post',
         imageSource=imageSourceUrl,
         form=form
-        )
+    )
 @app.route('/login', methods=['GET', 'POST'])
 
 def post(id):
