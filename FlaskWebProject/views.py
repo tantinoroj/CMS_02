@@ -48,9 +48,9 @@ def home():
 def new_post():
     logger.info(f"User {current_user.username} accessing new post page")
     form = PostForm(request.form)
-        if form.validate_on_submit():
-            try:
-                logger.info(f"User {current_user.username} creating new post")
+    if form.validate_on_submit():
+        try:
+            logger.info(f"User {current_user.username} creating new post")
             post = Post()
             post.save_changes(form, request.files['image_path'], current_user.id, new=True)
             # LOG Informational
@@ -58,16 +58,16 @@ def new_post():
             logger.info(f"User {current_user.username} successfully created new post")
             flash('Your post has been created!')
             return redirect(url_for('home'))
-         except Exception as e:
+        except Exception as e:
             logger.error(f"Error creating post by user {current_user.username}: {str(e)}")
             db.session.rollback()
             flash(f"Error creating post: {str(e)}")
-        return render_template(
-            'post.html',
-            title='Create Post',
-            imageSource=imageSourceUrl,
-            form=form
-            )
+     return render_template(
+        'post.html',
+        title='Create Post',
+        imageSource=imageSourceUrl,
+        form=form
+        )
 @app.route('/login', methods=['GET', 'POST'])
 
 def post(id):
