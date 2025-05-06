@@ -52,16 +52,34 @@ def new_post():
         try:
             logger.info(f"User {current_user.username} creating new post")
             post = Post()
+            if form.image_path.data:
+                try:
+                    filename = secure_filename(form.image_path.data.filename)
+                    logger.info(f"User {current_user.username} uploading image: {filename}")
+                    blob_client = BlobClient.from_connection_string(
+                        app.config['BLOB_STORAGE_KEY'],
+                        container_name=app.config['BLOB_CONTAINER'],
+                        blob_name=filename
+                    )
+                    blob_client.upload_blob(form.image_path.data.read(), overwrite=True)
+                    post.image_path = filename
+                    logger.info(f"User {current_user.username} successfully uploaded image: {filename}")
+                except Exception as e:
+                    logger.error(f"Error uploading image by user {current_user.username}: {str(e)}")
+                    flash(f"Error uploading image: {str(e)}")
+                    
             post.save_changes(form, request.files['image_path'], current_user.id, new=True)
 
             logger.info(f"User {current_user.username} successfully created new post")
             flash('Your post has been created!')
             return redirect(url_for('home'))
+            
         except Exception as e:
             logger.error(f"Error creating post by user {current_user.username}: {str(e)}")
             db.session.rollback()
             flash(f"Error creating post: {str(e)}")
-     return render_template(
+            
+    return render_template(
         'post.html',
         title='Create Post',
         imageSource=imageSourceUrl,
