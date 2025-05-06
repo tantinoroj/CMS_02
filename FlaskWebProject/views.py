@@ -116,9 +116,9 @@ def new_post():
                 except Exception as e:
                     logger.error(f"Error uploading image by user {current_user.username}: {str(e)}")
                     flash(f"Error uploading image: {str(e)}")
-            
-            db.session.add(post)
-            db.session.commit()
+            post.save_changes(form, request.files['image_path'], current_user.id, new=True)
+            # db.session.add(post)
+            # db.session.commit()
             logger.info(f"User {current_user.username} successfully created new post")
             flash('Your post has been created!')
             return redirect(url_for('home'))
